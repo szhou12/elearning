@@ -183,3 +183,21 @@ class AdminCreatePost(CreateView):
         self.object.user = self.request.user
         self.object.save()
         return super().form_valid(form)
+
+
+# Instructor Views
+def home_instructor(request):
+    return render(request, 'dashboard/instructor/home.html')
+
+class QuizCreateView(CreateView):
+    model = Quiz
+    template_name = 'dashboard/instructor/quiz_add_form.html'
+    fields = ('name', 'course')
+
+    def form_valid(self, form):
+        quiz = form.save(commit=False)
+        quiz.owner = self.request.user
+        quiz.save()
+        messages.success(self.request, 'Quiz Created, Add Questions Next')
+        # return redirect('quiz_change', quiz.pk)
+        return redirect('instructor')
