@@ -18,6 +18,8 @@ urlpatterns = [
     path('isign/', views.InstructorSignUpView.as_view(), name='isign'),
     path('addlearner/', views.AdminLearner.as_view(), name='addlearner'),
     path('apost/', views.AdminCreatePost.as_view(), name='apost'),
+    path('aluser/', views.ListUserView.as_view(), name='aluser'),
+    path('aduser/<int:pk>', views.ADeleteuser.as_view(), name='aduser'),
     # Instructor URLs
     path('instructor/', views.home_instructor, name='instructor'),
     path('quiz_add/', views.QuizCreateView.as_view(), name='quiz_add'),

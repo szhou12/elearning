@@ -185,6 +185,23 @@ class AdminCreatePost(CreateView):
         return super().form_valid(form)
 
 
+class ListUserView(LoginRequiredMixin, ListView):
+    model = User
+    template_name = 'dashboard/admin/list_users.html'
+    context_object_name = 'users'
+    paginated_by = 10
+
+
+    def get_queryset(self):
+        return User.objects.order_by('-id')
+
+class ADeleteuser(SuccessMessageMixin, DeleteView):
+    model = User
+    template_name = 'dashboard/admin/confirm_delete2.html'
+    success_url = reverse_lazy('aluser')
+    success_message = "User Deleted Successfully"
+
+
 # Instructor Views
 def home_instructor(request):
     return render(request, 'dashboard/instructor/home.html')
