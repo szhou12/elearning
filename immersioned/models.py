@@ -60,7 +60,7 @@ class Course(models.Model):
 
 class Tutorial(models.Model):
     title = models.CharField(max_length=50)
-    content = models.TextField()
+    content = models.TextField() ## change to store zip files
     thumb = models.ImageField(upload_to='', null=True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, default='')
     created_at = models.DateTimeField(auto_now_add=True)

@@ -54,8 +54,9 @@ from .forms import (LearnerSignUpForm, InstructorSignUpForm, PostForm)
 #                     BaseAnswerInlineFormSet, LearnerInterestsForm, LearnerCourse, UserForm, ProfileForm, PostForm)
 
 # Create your views here.
-# Shared Views
 
+
+#################### Shared Views ####################
 def home(request):
     return render(request, 'home.html')
 
@@ -95,30 +96,17 @@ def logoutView(request):
     logout(request)
     return redirect('home')
 
-# Learner Views
-class LearnerSignUpView(CreateView):
-    model = User
-    form_class = LearnerSignUpForm
-    template_name = 'signup_form.html'
-
-    def get_context_data(self, **kwargs):
-        # specify user type as learner
-        kwargs['user_type'] = 'learner'
-        return super().get_context_data(**kwargs)
-    
-    def form_valid(self, form):
-        user = form.save() # save registration info
-        login(self.request, user)
-
-        # Once a leaner succesfully fills up all required registration info,
-        # web page will be redirected to home page
-        return redirect('home')
-        # return redirect('learner')
 
 
-# Admin Views
+#################### Admin Views ####################
 def dashboard(request):
-    return render(request, 'dashboard/admin/home.html')
+    learner = User.objects.filter(is_learner=True).count()
+    instructor = User.objects.filter(is_instructor=True).count()
+    course = Course.objects.all().count()
+    users = User.objects.all().count()
+    admin_context = {'learner':learner, 'course':course, 'instructor':instructor, 'users':users}
+
+    return render(request, 'dashboard/admin/home.html', context=admin_context)
 
 
 class InstructorSignUpView(CreateView):
@@ -202,9 +190,18 @@ class ADeleteuser(SuccessMessageMixin, DeleteView):
     success_message = "User Deleted Successfully"
 
 
-# Instructor Views
+
+
+#################### Instructor Views ####################
 def home_instructor(request):
-    return render(request, 'dashboard/instructor/home.html')
+    # return render(request, 'dashboard/instructor/home.html')
+    learner = User.objects.filter(is_learner=True).count()
+    instructor = User.objects.filter(is_instructor=True).count()
+    course = Course.objects.all().count()
+    users = User.objects.all().count()
+    instructor_context = {'learner':learner, 'course':course, 'instructor':instructor, 'users':users}
+
+    return render(request, 'dashboard/instructor/home.html', context=instructor_context)
 
 class QuizCreateView(CreateView):
     model = Quiz
@@ -218,3 +215,76 @@ class QuizCreateView(CreateView):
         messages.success(self.request, 'Quiz Created, Add Questions Next')
         # return redirect('quiz_change', quiz.pk)
         return redirect('instructor')
+
+def tutorial(request):
+    courses = Course.objects.only('id', 'name')
+    courses_context = {'courses': courses}
+    return render(request, 'dashboard/instructor/tutorial.html', context=courses_context)
+
+def add_tutorial(request):
+    if request.method == 'POST':
+        title = request.POST['title']
+        course_id = request.POST['course_id']
+        content = request.POST['content']
+        thumb = request.FILES['thumb']
+        current_user = request.user
+        author_id = current_user.id
+        # print(author_id)
+        # print(course_id)
+        new_tutorial = Tutorial(title=title, content=content, thumb=thumb, user_id=author_id, course_id=course_id)
+        new_tutorial.save()
+        messages.success(request, 'New Tutorial Added Successfully!')
+        return redirect('tutorial')
+    else:
+        messages.error(request, "Failed to Add a New Tutorial")
+        return redirect('tutorial')
+
+
+def itutorial(request):
+    tutorials = Tutorial.objects.all().order_by('-created_at')
+    tutorials = {'tutorials':tutorials}
+    return render(request, 'dashboard/instructor/list_tutorial.html', tutorials)
+
+class ITutorialDetail(LoginRequiredMixin, DetailView):
+    model = Tutorial
+    template_name = 'dashboard/instructor/tutorial_detail.html'
+
+
+#################### Student Views ####################
+def home_learner(request):
+    learner = User.objects.filter(is_learner=True).count()
+    instructor = User.objects.filter(is_instructor=True).count()
+    course = Course.objects.all().count()
+    users = User.objects.all().count()
+
+    context = {'learner':learner, 'course':course, 'instructor':instructor, 'users':users}
+
+    return render(request, 'dashboard/learner/home.html', context=context)
+
+
+class LearnerSignUpView(CreateView):
+    model = User
+    form_class = LearnerSignUpForm
+    template_name = 'signup_form.html'
+
+    def get_context_data(self, **kwargs):
+        # specify user type as learner
+        kwargs['user_type'] = 'learner'
+        return super().get_context_data(**kwargs)
+    
+    def form_valid(self, form):
+        user = form.save() # save registration info
+        login(self.request, user)
+
+        # Once a leaner succesfully fills up all required registration info,
+        # web page will be redirected to student/learner page
+        return redirect('learner')
+
+def ltutorial(request):
+    tutorials = Tutorial.objects.all().order_by('-created_at')
+    tutorials = {'tutorials':tutorials}
+    return render(request, 'dashboard/learner/list_tutorial.html', tutorials)
+
+class LTutorialDetail(LoginRequiredMixin, DetailView):
+    model = Tutorial
+    template_name = 'dashboard/learner/tutorial_detail.html'

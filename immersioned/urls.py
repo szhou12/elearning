@@ -23,4 +23,12 @@ urlpatterns = [
     # Instructor URLs
     path('instructor/', views.home_instructor, name='instructor'),
     path('quiz_add/', views.QuizCreateView.as_view(), name='quiz_add'),
+    path('tutorial/', views.tutorial, name='tutorial'),
+    path('post/',views.add_tutorial, name='publish_tutorial'),
+    path('itutorial/', views.itutorial, name='itutorial'),
+    path('itutorials/<int:pk>/', views.ITutorialDetail.as_view(), name = "itutorial-detail"),
+    # Student URLs
+    path('learner/', views.home_learner, name='learner'),
+    path('ltutorial/',views.ltutorial, name='ltutorial'),
+    path('tutorials/<int:pk>/', views.LTutorialDetail.as_view(), name = "tutorial-detail"),
 ]
