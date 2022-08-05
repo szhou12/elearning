@@ -31,4 +31,5 @@ urlpatterns = [
     path('learner/', views.home_learner, name='learner'),
     path('ltutorial/',views.ltutorial, name='ltutorial'),
     path('tutorials/<int:pk>/', views.LTutorialDetail.as_view(), name = "tutorial-detail"),
+    path('interests/', views.LearnerInterestsView.as_view(), name='interests'),
 ]

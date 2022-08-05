@@ -86,3 +86,12 @@ class LearnerSignUpForm(UserCreationForm):
         # learner.interests.add(*self.cleaned_data.get('interests'))
         return user
 
+
+class LearnerInterestsForm(forms.ModelForm):
+    class Meta:
+        model = Learner
+        fields = ('interests', )
+        widgets = {
+            'interests': forms.CheckboxSelectMultiple
+        }
+
