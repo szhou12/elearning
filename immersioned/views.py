@@ -27,7 +27,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import auth
 from datetime import datetime, date
 from django.core.exceptions import ValidationError
-from . import models
 import operator
 import itertools
 from django.db.models import Avg, Count, Sum
@@ -49,7 +48,9 @@ from bootstrap_modal_forms.generic import (
     BSModalDeleteView
 )
 
-from .forms import (LearnerSignUpForm, InstructorSignUpForm, PostForm)
+from . import models
+
+from .forms import (LearnerSignUpForm, LearnerInterestsForm, InstructorSignUpForm, PostForm)
 # from .forms import (TakeQuizForm, LearnerSignUpForm, InstructorSignUpForm, QuestionForm, 
 #                     BaseAnswerInlineFormSet, LearnerInterestsForm, LearnerCourse, UserForm, ProfileForm, PostForm)
 
@@ -142,7 +143,7 @@ class AdminLearner(CreateView):
         user = form.save() # save registration info
         messages.success(self.request, 'Learner Added Successfully')
 
-        # Once a leaner succesfully fills up all required registration info,
+        # Once a learner succesfully fills up all required registration info,
         # web page will be redirected to home page
         return redirect('addlearner') # learner sign-in
     
@@ -280,11 +281,39 @@ class LearnerSignUpView(CreateView):
         # web page will be redirected to student/learner page
         return redirect('learner')
 
+
 def ltutorial(request):
-    tutorials = Tutorial.objects.all().order_by('-created_at')
+    ## List tutorials with course_id selected by the learner
+
+    current_user = request.user
+    
+    # selected_course_ids = current_user.learner.interests.values_list('id', flat=True)
+    selected_course = current_user.learner.interests.all()
+    # print(selected_course)
+
+    tutorials = Tutorial.objects.filter(course__in=selected_course).order_by('-created_at')
+    # tutorials = Tutorial.objects.all().order_by('-created_at')
+
     tutorials = {'tutorials':tutorials}
     return render(request, 'dashboard/learner/list_tutorial.html', tutorials)
+
 
 class LTutorialDetail(LoginRequiredMixin, DetailView):
     model = Tutorial
     template_name = 'dashboard/learner/tutorial_detail.html'
+
+
+
+class LearnerInterestsView(UpdateView):
+    model = Learner
+    form_class = LearnerInterestsForm
+    template_name = 'dashboard/learner/interests_form.html'
+    # success_url = reverse_lazy('lquiz_list')
+    success_url = reverse_lazy('learner')
+
+    def get_object(self):
+        return self.request.user.learner
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Course Updated Successfully')
+        return super().form_valid(form)
