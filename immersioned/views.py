@@ -283,10 +283,10 @@ class LearnerSignUpView(CreateView):
 
 
 def ltutorial(request):
-    ## List tutorials with course_id selected by the learner
+    ## List tutorials only with course_id selected by the learner
 
     current_user = request.user
-    
+
     # selected_course_ids = current_user.learner.interests.values_list('id', flat=True)
     selected_course = current_user.learner.interests.all()
     # print(selected_course)
