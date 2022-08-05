@@ -309,7 +309,8 @@ class LearnerInterestsView(UpdateView):
     form_class = LearnerInterestsForm
     template_name = 'dashboard/learner/interests_form.html'
     # success_url = reverse_lazy('lquiz_list')
-    success_url = reverse_lazy('learner')
+    # success_url = reverse_lazy('learner')
+    success_url = reverse_lazy('interests_form')
 
     def get_object(self):
         return self.request.user.learner
