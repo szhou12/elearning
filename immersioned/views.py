@@ -160,6 +160,12 @@ def course(request):
     else:
         return render(request, 'dashboard/admin/course.html')
 
+def icourse(request):
+    return render(request, 'dashboard/admin/icourse.html')
+
+def icourse2(request):
+    return render(request, 'dashboard/admin/icourse2.html')
+
 
 class AdminCreatePost(CreateView):
     model = Announcement
