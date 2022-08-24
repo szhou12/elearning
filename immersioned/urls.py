@@ -34,4 +34,8 @@ urlpatterns = [
     path('ltutorial/',views.ltutorial, name='ltutorial'),
     path('tutorials/<int:pk>/', views.LTutorialDetail.as_view(), name = "tutorial-detail"),
     path('interests/', views.LearnerInterestsView.as_view(), name='interests'),
+    path('llistnotes/', views.LLNotesList.as_view(), name='llnotes'),
+    path('ladd_notes/', views.student_add_notes, name='ladd_notes'),
+    path('lpublish_notes/', views.student_publish_notes, name='lpublish_notes'),
+    path('update_file/<int:pk>', views.student_update_file, name='update_file'),
 ]

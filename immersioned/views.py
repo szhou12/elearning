@@ -316,7 +316,7 @@ class LearnerInterestsView(UpdateView):
     template_name = 'dashboard/learner/interests_form.html'
     # success_url = reverse_lazy('lquiz_list')
     # success_url = reverse_lazy('learner')
-    success_url = reverse_lazy('interests_form')
+    success_url = reverse_lazy('interests')
 
     def get_object(self):
         return self.request.user.learner
@@ -324,3 +324,61 @@ class LearnerInterestsView(UpdateView):
     def form_valid(self, form):
         messages.success(self.request, 'Course Updated Successfully')
         return super().form_valid(form)
+
+
+
+class LLNotesList(ListView):
+    model = Notes
+    template_name = 'dashboard/learner/list_notes.html'
+    context_object_name = 'notes'
+    paginate_by = 4
+
+
+    def get_queryset(self):
+        return Notes.objects.order_by('-id')
+
+
+def student_add_notes(request):
+    current_user = request.user
+    selected_course = current_user.learner.interests.all().only('id', 'name')
+
+    # courses = Course.objects.only('id', 'name')
+
+    context = {'courses':selected_course}
+    return render(request, 'dashboard/learner/add_notes.html', context)
+
+
+def student_publish_notes(request):
+    if request.method == 'POST':
+        title = request.POST['title']
+        course_id = request.POST['course_id']
+        cover = request.FILES['cover']
+        file = request.FILES['file']
+        current_user = request.user
+        user_id = current_user.id
+
+        a = Notes(title=title, cover=cover, file=file, user_id=user_id, course_id=course_id)
+        a.save()
+        messages.success = (request, 'File Uploaded Successfully')
+        return redirect('llnotes')
+    else:
+        messages.error = (request, 'Upload Failed')
+        return redirect('ladd_notes')
+
+
+def student_update_file(request, pk):
+    if request.method == 'POST':
+        file = request.FILES['file']
+        file_name = request.FILES['file'].name
+
+        fs = FileSystemStorage()
+        file = fs.save(file.name, file)
+        fileurl = fs.url(file)
+        file = file_name
+        # print(file)
+
+        Notes.objects.filter(id = pk).update(file = file)
+        messages.success = (request, 'Notes was updated successfully!')
+        return redirect('llnotes')
+    else:
+        return render(request, 'dashboard/learner/update.html')
