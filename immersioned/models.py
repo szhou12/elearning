@@ -15,6 +15,7 @@ class User(AbstractUser):
     is_learner = models.BooleanField(default=False)
     is_instructor = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
+    
 
 
 class Profile(models.Model):
