@@ -252,6 +252,12 @@ def itutorial(request):
     tutorials = {'tutorials':tutorials}
     return render(request, 'dashboard/instructor/list_tutorial.html', tutorials)
 
+def sample_data(request):
+    return render(request,'dashboard/instructor/sample_data.html')
+
+def sample_data2(request):
+    return render(request,'dashboard/instructor/sample_data2.html')
+
 class ITutorialDetail(LoginRequiredMixin, DetailView):
     model = Tutorial
     template_name = 'dashboard/instructor/tutorial_detail.html'
