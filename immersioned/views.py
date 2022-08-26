@@ -251,6 +251,18 @@ class ITutorialDetail(LoginRequiredMixin, DetailView):
     template_name = 'dashboard/instructor/tutorial_detail.html'
 
 
+class LNotesList(ListView):
+    model = Notes
+    template_name = 'dashboard/instructor/list_notes.html'
+    context_object_name = 'notes'
+    paginate_by = 4
+
+
+    def get_queryset(self):
+        return Notes.objects.order_by('-id')
+
+
+
 #################### Student Views ####################
 def home_learner(request):
     learner = User.objects.filter(is_learner=True).count()
