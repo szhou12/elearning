@@ -29,6 +29,8 @@ urlpatterns = [
     path('post/',views.add_tutorial, name='publish_tutorial'),
     path('itutorial/', views.itutorial, name='itutorial'),
     path('itutorials/<int:pk>/', views.ITutorialDetail.as_view(), name = "itutorial-detail"),
+    path('sample_data/', views.sample_data, name='sample_data'),
+    path('sample_data2/', views.sample_data2, name='sample_data2'),
     # Student URLs
     path('learner/', views.home_learner, name='learner'),
     path('ltutorial/',views.ltutorial, name='ltutorial'),
