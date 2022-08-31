@@ -359,12 +359,14 @@ def student_publish_notes(request):
         title = request.POST['title']
         course_id = request.POST['course_id']
         cover = request.FILES['cover']
-        file = request.FILES['file']
+
+        file = request.FILES['file'] # TODO: add a helper function that parse & store file
+        
         current_user = request.user
         user_id = current_user.id
 
-        a = Notes(title=title, cover=cover, file=file, user_id=user_id, course_id=course_id)
-        a.save()
+        note = Notes(title=title, cover=cover, file=file, user_id=user_id, course_id=course_id)
+        note.save()
         messages.success = (request, 'File Uploaded Successfully')
         return redirect('llnotes')
     else:
@@ -374,7 +376,7 @@ def student_publish_notes(request):
 
 def student_update_file(request, pk):
     if request.method == 'POST':
-        file = request.FILES['file']
+        file = request.FILES['file'] # TODO: add a helper function that parse & store file
         file_name = request.FILES['file'].name
 
         fs = FileSystemStorage()
