@@ -160,6 +160,12 @@ def course(request):
     else:
         return render(request, 'dashboard/admin/course.html')
 
+def icourse(request):
+    return render(request, 'dashboard/admin/icourse.html')
+
+def icourse2(request):
+    return render(request, 'dashboard/admin/icourse2.html')
+
 
 class AdminCreatePost(CreateView):
     model = Announcement
@@ -245,6 +251,12 @@ def itutorial(request):
     tutorials = Tutorial.objects.all().order_by('-created_at')
     tutorials = {'tutorials':tutorials}
     return render(request, 'dashboard/instructor/list_tutorial.html', tutorials)
+
+def sample_data(request):
+    return render(request,'dashboard/instructor/sample_data.html')
+
+def sample_data2(request):
+    return render(request,'dashboard/instructor/sample_data2.html')
 
 class ITutorialDetail(LoginRequiredMixin, DetailView):
     model = Tutorial

@@ -20,6 +20,8 @@ urlpatterns = [
     path('apost/', views.AdminCreatePost.as_view(), name='apost'),
     path('aluser/', views.ListUserView.as_view(), name='aluser'),
     path('aduser/<int:pk>', views.ADeleteuser.as_view(), name='aduser'),
+    path('icourse/', views.icourse, name='icourse'),
+    path('icourse2/', views.icourse, name='icourse2'),
     # Instructor URLs
     path('instructor/', views.home_instructor, name='instructor'),
     path('quiz_add/', views.QuizCreateView.as_view(), name='quiz_add'),

@@ -1,0 +1,52 @@
+{% extends 'dashboard/instructor/base.html' %}
+
+{% load static %}
+
+{% block body %}
+<br>
+<br>
+
+<div class="container my-5">
+    <h2>Graded Page</h2>
+    <p>This page shows the access to each students'data</p>            
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Complete Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>163070908</td>
+          <td>John Smith</td>
+          <td>Completed</td>
+          <td>
+            <a href="{% url 'sample_data2' %}" class="btn btn-info" role="button">Grade</a>
+          </td>
+        </tr>
+        <tr>
+          <td>163900465</td>
+          <td>Mary Jane</td>
+          <td>Completed</td>
+          <td>
+            <a href="#" class="btn btn-info" role="button">Grade</a>
+          </td>
+        </tr>
+        <tr>
+          <td>1634112892</td>
+          <td>Tina Davis</td>
+          <td>Uncompleted</td>
+          <td>
+            <a href="#" class="btn btn-info" role="button">Grade</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+
+
+{% endblock %}
