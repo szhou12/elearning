@@ -47,7 +47,7 @@ from bootstrap_modal_forms.generic import (
     BSModalReadView,
     BSModalDeleteView
 )
-
+import csv
 from . import models
 
 from .forms import (LearnerSignUpForm, LearnerInterestsForm, InstructorSignUpForm, PostForm)
@@ -366,6 +366,18 @@ def student_add_notes(request):
     return render(request, 'dashboard/learner/add_notes.html', context)
 
 
+def parse_file(f):
+    file_data = f.read().decode("utf-8")
+    result = []
+    lines = file_data.split("\r\n")	
+    
+    for line in lines:
+        row = line.split(",")
+        result.append(row)
+
+    return result
+
+
 def student_publish_notes(request):
     if request.method == 'POST':
         title = request.POST['title']
@@ -388,8 +400,11 @@ def student_publish_notes(request):
 
 def student_update_file(request, pk):
     if request.method == 'POST':
+
         file = request.FILES['file'] # TODO: add a helper function that parse & store file
         file_name = request.FILES['file'].name
+        data = {}
+        data["file_name"] = parse_file(file)
 
         fs = FileSystemStorage()
         file = fs.save(file.name, file)
@@ -399,6 +414,7 @@ def student_update_file(request, pk):
 
         Notes.objects.filter(id = pk).update(file = file)
         messages.success = (request, 'Notes was updated successfully!')
-        return redirect('llnotes')
+        # return redirect('llnotes')
+        return render(request, 'dashboard/learner/test.html', context=data)
     else:
         return render(request, 'dashboard/learner/update.html')
