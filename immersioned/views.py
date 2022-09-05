@@ -48,6 +48,7 @@ from bootstrap_modal_forms.generic import (
     BSModalDeleteView
 )
 import csv
+import json
 from . import models
 
 from .forms import (LearnerSignUpForm, LearnerInterestsForm, InstructorSignUpForm, PostForm)
@@ -256,7 +257,13 @@ def sample_data(request):
     return render(request,'dashboard/instructor/sample_data.html')
 
 def sample_data2(request):
-    return render(request,'dashboard/instructor/sample_data2.html')
+    # add function to parse the json data
+    file = Notes.objects.get(pk=1)
+    game_data = json.loads(file.data)
+    data = {}
+
+    data["gd"] = game_data[1:]
+    return render(request,'dashboard/instructor/sample_data2.html', context=data)
 
 class ITutorialDetail(LoginRequiredMixin, DetailView):
     model = Tutorial
@@ -385,11 +392,12 @@ def student_publish_notes(request):
         cover = request.FILES['cover']
 
         file = request.FILES['file'] # TODO: add a helper function that parse & store file
-        
+        game_data = json.dumps(parse_file(file))
+
         current_user = request.user
         user_id = current_user.id
 
-        note = Notes(title=title, cover=cover, file=file, user_id=user_id, course_id=course_id)
+        note = Notes(title=title, cover=cover, file=file, user_id=user_id, course_id=course_id, data=game_data)
         note.save()
         messages.success = (request, 'File Uploaded Successfully')
         return redirect('llnotes')
@@ -403,8 +411,9 @@ def student_update_file(request, pk):
 
         file = request.FILES['file'] # TODO: add a helper function that parse & store file
         file_name = request.FILES['file'].name
-        data = {}
-        data["file_name"] = parse_file(file)
+
+        
+        game_data = json.dumps(parse_file(file))
 
         fs = FileSystemStorage()
         file = fs.save(file.name, file)
@@ -413,8 +422,8 @@ def student_update_file(request, pk):
         # print(file)
 
         Notes.objects.filter(id = pk).update(file = file)
+        Notes.objects.filter(id = pk).update(data = game_data)
         messages.success = (request, 'Notes was updated successfully!')
-        # return redirect('llnotes')
-        return render(request, 'dashboard/learner/test.html', context=data)
+        return redirect('llnotes')
     else:
         return render(request, 'dashboard/learner/update.html')
