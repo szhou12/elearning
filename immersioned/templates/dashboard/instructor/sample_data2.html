@@ -21,126 +21,22 @@
         </tr>
       </thead>
       <tbody>
+        {% if gd %}
+        {% for row in gd %}
         <tr>
-          <td>1a</td>
-          <td>Bring Crops to Tithe Barn</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
+          <td>{{ row.0 }}</td>
+          <td>{{ row.1 }}</td>
+          <td>{{ row.2 }}</td>
+          <td>{{ row.3 }}</td>
+          <td>{{ row.4 }}</td>
+          <td>{{ row.5 }}</td>
+          <td>{{ row.6 }}</td>
+          <td>{{ row.7 }}</td>
         </tr>
-        <tr>
-            <td>1b</td>
-            <td>Purchase food at the Market</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>1c</td>
-            <td>Talk to Local Priest</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>1d</td>
-            <td>Say Goodbye to Your Family</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>1e</td>
-            <td>BTalk to Local Priest About Training</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>2a</td>
-            <td>Section 1 Total</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>2b</td>
-            <td>Read in Study Room</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>2c</td>
-            <td>Talk to Townspeople</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>2d</td>
-            <td>Town Dialogue 1</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>2e</td>
-            <td>Town Dialogue 2</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>3a</td>
-            <td>Meet Mystery Man</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>3b</td>
-            <td>Indulgence 1</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr>
+        {% endfor %}
+        {% endif %}
+
+
       </tbody>
     </table>
     <form>
@@ -157,6 +53,7 @@
           <input type="checkbox" class="form-check-input" id="exampleCheck1">
           <label class="form-check-label" for="exampleCheck1">Save the current content</label>
         </div>
+        <br>
         <a href="{% url 'sample_data' %}" class="btn btn-info" role="button">Submit</a>
     </form>
   </div>
