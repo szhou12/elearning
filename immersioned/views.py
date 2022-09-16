@@ -197,6 +197,27 @@ class ADeleteuser(SuccessMessageMixin, DeleteView):
     success_message = "User Deleted Successfully"
 
 
+def create_user_form(request):
+    return render(request, 'dashboard/admin/add_user.html')
+
+
+## Register new admin
+def create_user(request):
+    if request.method == 'POST':
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        password = make_password(password)
+
+        a = User(first_name=first_name, last_name=last_name, username=username, password=password, email=email, is_admin=True)
+        a.save()
+        messages.success(request, 'Admin Added Successfully')
+        return redirect('aluser')
+    else:
+        messages.error(request, 'Failed to Add a New Admin')
+        return redirect('create_user_form')
 
 
 #################### Instructor Views ####################
@@ -240,10 +261,10 @@ def add_tutorial(request):
         # print(course_id)
         new_tutorial = Tutorial(title=title, content=content, thumb=thumb, user_id=author_id, course_id=course_id)
         new_tutorial.save()
-        messages.success(request, 'New Tutorial Added Successfully!')
+        messages.success(request, 'New Game Module Added Successfully!')
         return redirect('tutorial')
     else:
-        messages.error(request, "Failed to Add a New Tutorial")
+        messages.error(request, "Failed to Add a New Game Module")
         return redirect('tutorial')
 
 
@@ -398,7 +419,7 @@ def student_update_file(request, pk):
         # print(file)
 
         Notes.objects.filter(id = pk).update(file = file)
-        messages.success = (request, 'Notes was updated successfully!')
+        messages.success = (request, 'File Updated Successfully!')
         return redirect('llnotes')
     else:
         return render(request, 'dashboard/learner/update.html')
