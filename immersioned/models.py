@@ -75,6 +75,8 @@ class Notes(models.Model):
     cover = models.ImageField(upload_to='', null=True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    data = models.TextField(null=True, blank=True)
 
 
     def __str__(self):
@@ -83,6 +85,7 @@ class Notes(models.Model):
     def delete(self, *args, **kwargs):
         self.file.delete()
         self.cover.delete()
+        self.data.delete()
         super().delete(*args, **kwargs)    
 
   
@@ -146,4 +149,5 @@ class TakenQuiz(models.Model):
 class LearnerAnswer(models.Model):
     student = models.ForeignKey(Learner, on_delete=models.CASCADE, related_name='quiz_answers')
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='+')
+
 

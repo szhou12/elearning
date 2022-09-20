@@ -47,7 +47,8 @@ from bootstrap_modal_forms.generic import (
     BSModalReadView,
     BSModalDeleteView
 )
-
+import csv
+import json
 from . import models
 
 from .forms import (LearnerSignUpForm, LearnerInterestsForm, InstructorSignUpForm, PostForm)
@@ -277,7 +278,13 @@ def sample_data(request):
     return render(request,'dashboard/instructor/sample_data.html')
 
 def sample_data2(request):
-    return render(request,'dashboard/instructor/sample_data2.html')
+    
+    file = Notes.objects.get(pk=1)
+    game_data = json.loads(file.data)
+    data = {}
+
+    data["gd"] = game_data[1:]
+    return render(request,'dashboard/instructor/sample_data2.html', context=data)
 
 class ITutorialDetail(LoginRequiredMixin, DetailView):
     model = Tutorial
@@ -387,6 +394,18 @@ def student_add_notes(request):
     return render(request, 'dashboard/learner/add_notes.html', context)
 
 
+def parse_file(f):
+    file_data = f.read().decode("utf-8")
+    result = []
+    lines = file_data.split("\r\n")	
+    
+    for line in lines:
+        row = line.split(",")
+        result.append(row)
+
+    return result
+
+
 def student_publish_notes(request):
     if request.method == 'POST':
         title = request.POST['title']
@@ -394,11 +413,12 @@ def student_publish_notes(request):
         cover = request.FILES['cover']
 
         file = request.FILES['file'] # TODO: add a helper function that parse & store file
-        
+        game_data = json.dumps(parse_file(file))
+
         current_user = request.user
         user_id = current_user.id
 
-        note = Notes(title=title, cover=cover, file=file, user_id=user_id, course_id=course_id)
+        note = Notes(title=title, cover=cover, file=file, user_id=user_id, course_id=course_id, data=game_data)
         note.save()
         messages.success = (request, 'File Uploaded Successfully')
         return redirect('llnotes')
@@ -409,8 +429,12 @@ def student_publish_notes(request):
 
 def student_update_file(request, pk):
     if request.method == 'POST':
+
         file = request.FILES['file'] # TODO: add a helper function that parse & store file
         file_name = request.FILES['file'].name
+
+        
+        game_data = json.dumps(parse_file(file))
 
         fs = FileSystemStorage()
         file = fs.save(file.name, file)
@@ -419,6 +443,7 @@ def student_update_file(request, pk):
         # print(file)
 
         Notes.objects.filter(id = pk).update(file = file)
+
         messages.success = (request, 'File Updated Successfully!')
         return redirect('llnotes')
     else:
