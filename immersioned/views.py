@@ -257,7 +257,6 @@ def sample_data(request):
     return render(request,'dashboard/instructor/sample_data.html')
 
 def sample_data2(request):
-    # add function to parse the json data
     file = Notes.objects.get(pk=1)
     game_data = json.loads(file.data)
     data = {}
