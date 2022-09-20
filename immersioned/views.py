@@ -443,7 +443,7 @@ def student_update_file(request, pk):
         # print(file)
 
         Notes.objects.filter(id = pk).update(file = file)
-
+        Notes.objects.filter(id = pk).update(data = game_data)
         messages.success = (request, 'File Updated Successfully!')
         return redirect('llnotes')
     else:
