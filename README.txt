@@ -2,6 +2,9 @@ admin account:
 username = admin
 password = qweasdzxc12345
 
+username = admin2
+password = qweasdzxc12345
+
 instructor account:
 username = teacher
 password = qweasdzxc12345
