@@ -256,9 +256,9 @@ def itutorial(request):
 def sample_data(request):
     return render(request,'dashboard/instructor/sample_data.html')
 
-def sample_data2(request, pk):
+def sample_data2(request):
     
-    file = Notes.objects.get(pk=pk)
+    file = Notes.objects.get(pk=1)
     game_data = json.loads(file.data)
     data = {}
 
