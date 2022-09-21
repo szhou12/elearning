@@ -22,6 +22,8 @@ urlpatterns = [
     path('aduser/<int:pk>', views.ADeleteuser.as_view(), name='aduser'),
     path('icourse/', views.icourse, name='icourse'),
     path('icourse2/', views.icourse, name='icourse2'),
+    path('create_user_form/', views.create_user_form, name='create_user_form'),
+    path('create_user/', views.create_user, name='create_user'),
     # Instructor URLs
     path('instructor/', views.home_instructor, name='instructor'),
     path('quiz_add/', views.QuizCreateView.as_view(), name='quiz_add'),

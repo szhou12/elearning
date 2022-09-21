@@ -18,7 +18,7 @@
                 <div class="card-header">
                     <i class="fas fa-table"></i>
                     List Of Users
-                    <a  class="btn btn-sm btn-success" href="" style="padding: 8px; float: right; background-color: #999965; color: white;">Register Admin</a>
+                    <a  class="btn btn-sm btn-success" href="{% url 'create_user_form' %}" style="padding: 8px; float: right; background-color: #999965; color: white;">Register Admin</a>
                 </div>
                 <div class="card-body">
                     {% for message in messages %}
