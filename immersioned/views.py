@@ -253,16 +253,31 @@ def itutorial(request):
     tutorials = {'tutorials':tutorials}
     return render(request, 'dashboard/instructor/list_tutorial.html', tutorials)
 
-def sample_data(request):
-    return render(request,'dashboard/instructor/sample_data.html')
-
-def sample_data2(request):
-    
-    file = Notes.objects.get(pk=1)
+def sample_data(request, pk):
+    file = Notes.objects.get(pk = pk)
     game_data = json.loads(file.data)
     data = {}
-
+    user_id = file.user_id
+    user = User.objects.get(id = file.user_id)
+    course = Course.objects.get(id = file.course_id)
     data["gd"] = game_data[1:]
+    data["user"] = user
+    data["user_id"] = user_id
+    data["course"] = course
+    return render(request,'dashboard/instructor/sample_data.html', context=data)
+
+def sample_data2(request, pk):
+    
+    file = Notes.objects.get(pk = pk)
+    game_data = json.loads(file.data)
+    data = {}
+    user_id = file.user_id
+    user = User.objects.get(id = file.user_id)
+    course = Course.objects.get(id = file.course_id)
+    data["gd"] = game_data[1:]
+    data["user"] = user
+    data["user_id"] = user_id
+    data["course"] = course
     return render(request,'dashboard/instructor/sample_data2.html', context=data)
 
 class ITutorialDetail(LoginRequiredMixin, DetailView):
