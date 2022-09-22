@@ -19,9 +19,11 @@
             <h2 class="card-title text-primary">{{ tutorial.course.name }} - {{ tutorial.title }}</h2>
 
           {% if tutorial.thumb %}
-              <img src="{{ tutorial.thumb.url }}" alt="{{ tutorial.title }}" style="width:400px; height: 400px">
+          <div class="card-body">
+            <a href="{{ tutorial.thumb.url }}" download class="btn btn-outline-success">Download Module</a>
+          </div> 
           {% else %}
-                <p></p>
+              <span class="text-muted">No Module Available</span>
           {% endif %}
           <div class="card-body">
             <p class="card-text">{{ tutorial.content | truncatechars:100 }}</p>

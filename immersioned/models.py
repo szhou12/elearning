@@ -61,8 +61,8 @@ class Course(models.Model):
 
 class Tutorial(models.Model):
     title = models.CharField(max_length=50)
-    content = models.TextField() ## change to store zip files
-    thumb = models.ImageField(upload_to='', null=True, blank=True)
+    content = models.TextField()
+    thumb = models.FileField(upload_to='', null=True, blank=True) ## Store game zip files
     course = models.ForeignKey(Course, on_delete=models.CASCADE, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
