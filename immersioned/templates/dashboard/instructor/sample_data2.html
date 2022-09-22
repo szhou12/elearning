@@ -5,7 +5,7 @@
 {% block body %}
 
 <div class="container my-5 mx-5">
-    <h4>ID: 163070908 | Name: John Smith</h4>
+    <h4>Course: {{ course }} | ID: {{ user_id }} | Name: {{ user }}</h4>
                
     <table class="table">
       <thead>
@@ -54,7 +54,7 @@
           <label class="form-check-label" for="exampleCheck1">Save the current content</label>
         </div>
         <br>
-        <a href="{% url 'sample_data' %}" class="btn btn-info" role="button">Submit</a>
+        <a href="#" class="btn btn-info" role="button">Submit</a>
     </form>
   </div>
 
